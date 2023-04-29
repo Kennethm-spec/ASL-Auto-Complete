@@ -5,7 +5,7 @@ mp_drawing_styles = mp.solutions.drawing_styles
 mp_hands = mp.solutions.hands
 
 # For static images:
-IMAGE_FILES = []
+IMAGE_FILES = ["hands.jpg"]
 with mp_hands.Hands(
         static_image_mode=True,
         max_num_hands=2,
@@ -67,6 +67,7 @@ with mp_hands.Hands(
     # Draw the hand annotations on the image.
     image.flags.writeable = True
     image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+    
     if results.multi_hand_landmarks:
       for hand_landmarks in results.multi_hand_landmarks:
         mp_drawing.draw_landmarks(
@@ -77,6 +78,8 @@ with mp_hands.Hands(
             mp_drawing_styles.get_default_hand_connections_style())
     # Flip the image horizontally for a selfie-view display.
     cv2.imshow('MediaPipe Hands', cv2.flip(image, 1))
+
     if cv2.waitKey(5) & 0xFF == 27:
       break
+
 cap.release()
