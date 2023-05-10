@@ -9,6 +9,9 @@ import base64
 import numpy as np
 from flask import Flask, request, jsonify, render_template, send_from_directory
 
+
+word = []
+
 app = Flask(__name__)
 
 
@@ -18,11 +21,11 @@ content_files = {
         'compress': True  # means compress the graph data in memory
     }
 }
-alphabet = ['1', '2', '3', 'space', 'del', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
-            'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-labels_ = ['1', '2', '3', 'space', 'del', 'A', 'B', 'C']
+alphabet = ['1', '2', '3', '4', 'space', 'del', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'
+            , 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y']
+
 autocomplete = autocomplete_factory(content_files=content_files)
-model = tf.keras.models.load_model("src/app/model/")
+model = tf.keras.models.load_model("src/app/model_saves/model_v2/")
 
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
@@ -32,7 +35,8 @@ def most_frequent(List):
     return max(set(List), key=List.count)
 
 def run_inference(image):
-    print("here")
+    global activate
+    activate = 1
     with mp_hands.Hands(
             model_complexity=0,
             min_detection_confidence=0.5,
@@ -48,9 +52,7 @@ def run_inference(image):
 
         landmarks = []
         letter = ''
-        print(image)
         if results.multi_hand_landmarks:
-            print("Got hand")
             for hand_landmarks in results.multi_hand_landmarks:
                 mp_drawing.draw_landmarks(
                     image,
@@ -79,12 +81,21 @@ def run_inference(image):
             # Convert the landmarks to a feature vector
             x_t = np.array(landmarks)
 
-            if x_t.flatten().shape[0] == 63:
+            if x_t.flatten().shape[0] == 63 and activate:
+                print("hey")
+                activate = 0
                 res_ = model.predict(np.array([x_t]), verbose=0)
 
                 index_class = np.argmax(res_)
 
                 letter = alphabet[index_class]
+
+                word.append(letter)
+
+                
+
+        else:
+            activate = 1
     return letter
 
 @app.route('/')
