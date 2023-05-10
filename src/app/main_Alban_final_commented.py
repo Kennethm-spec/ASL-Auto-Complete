@@ -15,7 +15,6 @@ app = Flask(__name__)
 
 word = ' '
 sentence = ' '
-
 suggestions = []
 
 # Functions definition
@@ -193,6 +192,10 @@ mp_hands = mp.solutions.hands
 # Define flask html pages
 @app.route('/')
 def index():
+    global word, suggestions, sentence
+    word = ' '
+    sentence = ' '
+    suggestions = []
     return render_template('index.html')
 
 # Define the recognize signs function
