@@ -32,7 +32,7 @@ def gen_frames():
     letters = ['']
     while True:
         # Capture frame-by-frame
-        cap = cv2.VideoCapture(0)
+        cap = cv2.VideoCapture('http://10.207.103.245/5003')
 
         with mp_hands.Hands(
                 model_complexity=0,
@@ -280,4 +280,4 @@ def send_js(path):
 
 if __name__ == '__main__':
     app.debug = True
-    app.run(port=5003, debug=True)
+    app.run(port=5003, debug=True, host='10.207.103.245')

@@ -12,17 +12,16 @@ const optionsDiv = document.getElementById('options');
 let stream;
 let interval;
 let recognizedSigns = [];
-let recognizedSentence = [];
 let optionsList = [];
 
 startButton.addEventListener("click", async () => {
     startButton.disabled = true;
     stopButton.disabled = false;
 
-
-    startActivate();
+    stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false});
+    video.srcObject = stream;
     // console.log("here")
-    interval = setInterval(captureAndSendFrame, 500); // Send a frame every 1000ms (1 second)
+    interval = setInterval(captureAndSendFrame, 1000); // Send a frame every 1000ms (1 second)
     // TODO for Kenneth, maybe send images every 100 ms then server will just wait until 1 second
     // this will give server 10 images to work with.
 });
@@ -32,26 +31,17 @@ stopButton.addEventListener("click", () => {
     stopButton.disabled = true;
 
     clearInterval(interval);
+    video.srcObject.getTracks().forEach(track => track.stop());
 });
 
-function startActivate() {
-
-    try {
-        const response = fetch("/api/recognize", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ activate: 1 })
-        });
-        // resultDiv.innerHTML = `<p>a</p>`;
-    } catch (error) {
-        console.error("Error sending frame to the server:", error);
-    }
-}
-
 async function captureAndSendFrame() {
-
+    const canvas = document.createElement("canvas");
+    console.log(video.videoWidth, video.videoHeight)
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    const context = canvas.getContext("2d");
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    const imageData = canvas.toDataURL("image/jpeg", 0.8).split(",")[1];
 
     try {
         const response = await fetch("/api/recognize", {
@@ -59,19 +49,17 @@ async function captureAndSendFrame() {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ activate: 0 })
+            body: JSON.stringify({ image: imageData })
         });
 
         let result = await response.json();
         
         console.log(result.sign);
-        console.log(result.sentence);
         console.log(typeof result.sign);
         console.log(result.options); //this contains the array of options
         
         if(result.sign.length > 0){
             recognizedSigns.push(result.sign);
-            recognizedSentence.push(result.sentence);
             optionsList = result.options;
             updateResultDisplay();
             updateOptions();
@@ -88,8 +76,8 @@ function updateResultDisplay() {
         * not bullet points ... 
         */
     resultDiv.innerHTML = "<p>";
-    recognizedSentence.forEach(sentence => {
-        resultDiv.innerHTML = `${sentence}`;
+    recognizedSigns.forEach(sign => {
+        resultDiv.innerHTML += `${sign}`;
     });
     resultDiv.innerHTML += "</p>";
     
@@ -100,23 +88,14 @@ function updateOptions() {
         * This function updates the current results that we have ... we'll modify to have a sentence and
         * not bullet points ... 
         */
+    optionsDiv.innerHTML = "<ul>";
     recognizedSigns.forEach(sign => {
-        optionsDiv.innerHTML = `<br><b class="text-center card-header"> Word: ${[sign]}<b>`;
+        optionsDiv.innerHTML += `<li>${[sign]}</li>`;
     });
-
-    optionsDiv.innerHTML += `<br><br>`
-
-    var ol = document.createElement("ol");
-
-    // ol.className = 'list-group-numbered'
-    optionsDiv.appendChild(ol);
     optionsList.forEach(options => {
-        var li = document.createElement("li");
-        // li.className = 'list-group-item'
-        li.innerHTML = `${options}`;
-        ol.appendChild(li);
+        optionsDiv.innerHTML += `<li>${options}</li>`;
     });
-    optionsDiv.appendChild(ol);
+    optionsDiv.innerHTML += "</ul>";
     
 }
 
