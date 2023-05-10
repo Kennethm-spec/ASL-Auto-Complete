@@ -66,6 +66,10 @@ def gen_frames():
                     # If loading a video, use 'break' instead of 'continue'.
                     continue
 
+                print("before")
+                print(type(image))
+                print(image.shape)
+
                 # To improve performance, optionally mark the image as not writeable to
                 # pass by reference.
                 image.flags.writeable = False
