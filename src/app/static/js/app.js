@@ -50,11 +50,17 @@ async function captureAndSendFrame() {
             body: JSON.stringify({ image: imageData })
         });
 
-        const result = await response.json();
-        recognizedSigns.push(result.sign);
-        console.log(result.sign)
-        // updateResultDisplay();
-        // resultDiv.innerHTML = `<p>${result.sign}</p>`;
+        let result = await response.json();
+        
+        console.log(result.sign);
+        console.log(typeof result.sign);
+        console.log(result.options); //this contains the array of options
+        
+        if(result.sign.length > 0){
+            recognizedSigns.push(result.sign);
+            updateResultDisplay();
+        }
+        // resultDiv.innerHTML = `<p>a</p>`;
     } catch (error) {
         console.error("Error sending frame to the server:", error);
     }
@@ -65,11 +71,11 @@ function updateResultDisplay() {
         * This function updates the current results that we have ... we'll modify to have a sentence and
         * not bullet points ... 
         */
-    resultDiv.innerHTML = "<ul>";
+    resultDiv.innerHTML = "<p>";
     recognizedSigns.forEach(sign => {
-        resultDiv.innerHTML += `<li>${sign}</li>`;
+        resultDiv.innerHTML += `${sign}`;
     });
-    resultDiv.innerHTML += "</ul>";
+    resultDiv.innerHTML += "</p>";
     
 }
 

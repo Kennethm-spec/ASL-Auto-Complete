@@ -14,29 +14,15 @@ app = Flask(__name__)
 
 content_files = {
     'words': {
-        'filepath': 'word_dict.json',
+        'filepath': 'src/app/word_dict.json',
         'compress': True  # means compress the graph data in memory
     }
 }
 alphabet = ['1', '2', '3', 'space', 'del', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
             'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 labels_ = ['1', '2', '3', 'space', 'del', 'A', 'B', 'C']
-# NUM_CLASSES = len(labels_)
-# model = Sequential()
-# # Create a checkpoint object and restore the weights
-# checkpoint_path = "model_checkpoints/cp_numbers_1.ckpt"
-
-# model.add(LSTM(64, return_sequences=True,
-#           activation='relu', input_shape=(21, 3)))
-# model.add(LSTM(128, return_sequences=True, activation='relu'))
-# model.add(LSTM(64, return_sequences=False, activation='relu'))
-# model.add(Dense(64, activation='relu'))
-# model.add(Dense(32, activation='relu'))
-# model.add(Dense(NUM_CLASSES, activation='softmax'))
-
-# autocomplete = autocomplete_factory(content_files=content_files)
-# model.load_weights(checkpoint_path)
-model = tf.keras.models.load_model("model/")
+autocomplete = autocomplete_factory(content_files=content_files)
+model = tf.keras.models.load_model("src/app/model/")
 
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
@@ -46,11 +32,12 @@ def most_frequent(List):
     return max(set(List), key=List.count)
 
 def run_inference(image):
+    print("here")
     with mp_hands.Hands(
             model_complexity=0,
             min_detection_confidence=0.5,
             min_tracking_confidence=0.5) as hands:
-        
+        print(image.shape, image.dtype, type(image))
         # decode numpy array into OpenCV BGR image
         image = cv2.imdecode(image, flags=1)
         results = hands.process(image)
@@ -61,7 +48,9 @@ def run_inference(image):
 
         landmarks = []
         letter = ''
+        print(image)
         if results.multi_hand_landmarks:
+            print("Got hand")
             for hand_landmarks in results.multi_hand_landmarks:
                 mp_drawing.draw_landmarks(
                     image,
@@ -98,7 +87,7 @@ def run_inference(image):
                 letter = alphabet[index_class]
     return letter
 
-@app.route('/', methods=['GET'])
+@app.route('/')
 def index():
     return render_template('index.html')
 
@@ -112,10 +101,12 @@ def recognize():
     # TODO: do something with image array
     if img_array.size == 0:
         sign = ''
+        options = []
     else:
         sign = run_inference(img_array)
+    options = autocomplete.search(word=sign, size=2, max_cost=100) # it returns an empty array if sign is empty
     # sign = 'hello world'  # return hello world for now
-    return jsonify({'sign': sign})
+    return jsonify({'sign': sign, 'options': options})
 
 # Disable caching for CSS files
 @app.route('/static/css/<path:path>')
@@ -128,4 +119,5 @@ def send_js(path):
     return send_from_directory('static/js', path, cache_timeout=0)
 
 if __name__ == '__main__':
+    app.debug = True
     app.run(port=5003, debug=True)
