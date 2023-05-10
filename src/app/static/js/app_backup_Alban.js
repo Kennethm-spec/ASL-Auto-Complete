@@ -19,8 +19,6 @@ startButton.addEventListener("click", async () => {
     startButton.disabled = true;
     stopButton.disabled = false;
 
-
-    startActivate();
     // console.log("here")
     interval = setInterval(captureAndSendFrame, 500); // Send a frame every 1000ms (1 second)
     // TODO for Kenneth, maybe send images every 100 ms then server will just wait until 1 second
@@ -34,32 +32,14 @@ stopButton.addEventListener("click", () => {
     clearInterval(interval);
 });
 
-function startActivate() {
-
-    try {
-        const response = fetch("/api/recognize", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ activate: 1 })
-        });
-        // resultDiv.innerHTML = `<p>a</p>`;
-    } catch (error) {
-        console.error("Error sending frame to the server:", error);
-    }
-}
-
 async function captureAndSendFrame() {
-
 
     try {
         const response = await fetch("/api/recognize", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ activate: 0 })
+            }
         });
 
         let result = await response.json();
@@ -100,23 +80,14 @@ function updateOptions() {
         * This function updates the current results that we have ... we'll modify to have a sentence and
         * not bullet points ... 
         */
+    optionsDiv.innerHTML = "<ul>";
     recognizedSigns.forEach(sign => {
-        optionsDiv.innerHTML = `<br><b class="text-center card-header"> Word: ${[sign]}<b>`;
+        optionsDiv.innerHTML = `<b class="text-center">${[sign]}<b>`;
     });
-
-    optionsDiv.innerHTML += `<br><br>`
-
-    var ol = document.createElement("ol");
-
-    // ol.className = 'list-group-numbered'
-    optionsDiv.appendChild(ol);
     optionsList.forEach(options => {
-        var li = document.createElement("li");
-        // li.className = 'list-group-item'
-        li.innerHTML = `${options}`;
-        ol.appendChild(li);
+        optionsDiv.innerHTML += `<li>${options}</li>`;
     });
-    optionsDiv.appendChild(ol);
+    optionsDiv.innerHTML += "</ul>";
     
 }
 

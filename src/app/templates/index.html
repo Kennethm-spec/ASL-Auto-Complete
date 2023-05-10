@@ -24,22 +24,26 @@
                 <p id="result"></p>
             </div>
 
-            <div class="post">
-                <header class="major">
-                    <video class = "my-video" id="video" autoplay></video>
-                    <!-- <video class = "my-video" id="replay" style="display:none;"></video> -->
-                    <p id="timer"></p>
-                    <button id="start" class="btn btn-primary">Start</button>
-                    <button id="stop" disabled class="btn btn-danger">Stop</button>
-                    <!-- <button id="replayBtn" class="btn btn-secondary" style="display:none;">Replay</button>
-                    <button id="approve" class="btn btn-success" style="display:none;">Approve</button> -->
-                    <div id="result">
-                    <div id="options"></div>
-                    </div>
-                </header>
+            <div class="container">
+                <div class="col-lg-10  offset-lg-2">
+                    <h3 class="mt-5">Live Streaming</h3>
+                    <img class="border border-dark" src="{{ url_for('video_feed') }}" width="100%">
+                </div>
+                <div class="post col-lg-10  offset-lg-2">
+                    <header class="major">
+                        <p id="timer"></p>
+                        <button id="start" class="btn btn-primary">Start</button>
+                        <button id="stop" disabled class="btn btn-danger">Stop</button>
+                        <!-- <button id="replayBtn" class="btn btn-secondary" style="display:none;">Replay</button>
+                        <button id="approve" class="btn btn-success" style="display:none;">Approve</button> -->
+                        <div id="result">
+                        <div id="options"></div>
+                        </div>
+                    </header>
+                </div>
             </div>
 
-        </div>
+            
 
         <!-- Copyright -->
         <div id="copyright">
