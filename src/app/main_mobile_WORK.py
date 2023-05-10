@@ -47,6 +47,10 @@ def run_inference(image):
             min_tracking_confidence=0.5) as hands:
         # decode numpy array into OpenCV BGR image
 
+        print("before")
+        print(type(image))
+        print(image.shape)
+
         image.flags.writeable = False
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         results = hands.process(image)
@@ -159,6 +163,8 @@ def recognize():
     img_data = base64.b64decode(data['image'])
     img = Image.open(BytesIO(img_data))
     img_array = np.array(img)
+    print("AAAA")
+    print(img_array.shape)
     #img_array = np.frombuffer(img_data, dtype=np.uint8)
     # print(f'here is img_array -> {img_array}')
     # print(f'{img_array.size}')

@@ -24,7 +24,7 @@ startButton.addEventListener("click", async () => {
     video.srcObject = stream;
     // console.log("here")
     startActivate();
-    interval = setInterval(captureAndSendFrame, 100); // Send a frame every 1000ms (1 second)
+    interval = setInterval(captureAndSendFrame, 200); // Send a frame every 1000ms (1 second)
     // TODO for Kenneth, maybe send images every 100 ms then server will just wait until 1 second
     // this will give server 10 images to work with.
 });
