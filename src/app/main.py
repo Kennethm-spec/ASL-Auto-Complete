@@ -25,7 +25,7 @@ alphabet = ['1', '2', '3', '4', 'space', 'del', 'A', 'B', 'C', 'D', 'E', 'F', 'G
             , 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y']
 
 autocomplete = autocomplete_factory(content_files=content_files)
-model = tf.keras.models.load_model("src/app/model_saves/model_v2/")
+model = tf.keras.models.load_model("src/app/model_saves/my_model/")
 
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
@@ -131,4 +131,4 @@ def send_js(path):
 
 if __name__ == '__main__':
     app.debug = True
-    app.run(port=5003, debug=True, host = '0.0.0.0')
+    app.run(port=5003, debug=True)
