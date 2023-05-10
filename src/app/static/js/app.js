@@ -7,10 +7,12 @@ const approveButton = document.getElementById('approve');
 const timerElement = document.getElementById('timer');
 const resultElement = document.getElementById('result');
 const resultDiv = document.getElementById("result");
+const optionsDiv = document.getElementById('options');
 
 let stream;
 let interval;
 let recognizedSigns = [];
+let optionsList = [];
 
 startButton.addEventListener("click", async () => {
     startButton.disabled = true;
@@ -18,7 +20,7 @@ startButton.addEventListener("click", async () => {
 
     stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false});
     video.srcObject = stream;
-    console.log("here")
+    // console.log("here")
     interval = setInterval(captureAndSendFrame, 1000); // Send a frame every 1000ms (1 second)
     // TODO for Kenneth, maybe send images every 100 ms then server will just wait until 1 second
     // this will give server 10 images to work with.
@@ -58,8 +60,10 @@ async function captureAndSendFrame() {
         
         if(result.sign.length > 0){
             recognizedSigns.push(result.sign);
+            optionsList = result.options;
             updateResultDisplay();
-        }
+            updateOptions();
+        } 
         // resultDiv.innerHTML = `<p>a</p>`;
     } catch (error) {
         console.error("Error sending frame to the server:", error);
@@ -76,6 +80,22 @@ function updateResultDisplay() {
         resultDiv.innerHTML += `${sign}`;
     });
     resultDiv.innerHTML += "</p>";
+    
+}
+
+function updateOptions() {
+    /* 
+        * This function updates the current results that we have ... we'll modify to have a sentence and
+        * not bullet points ... 
+        */
+    optionsDiv.innerHTML = "<ul>";
+    recognizedSigns.forEach(sign => {
+        optionsDiv.innerHTML += `<li>${[sign]}</li>`;
+    });
+    optionsList.forEach(options => {
+        optionsDiv.innerHTML += `<li>${options}</li>`;
+    });
+    optionsDiv.innerHTML += "</ul>";
     
 }
 
