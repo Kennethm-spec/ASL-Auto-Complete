@@ -32,7 +32,7 @@ def gen_frames():
     letters = ['']
     while True:
         # Capture frame-by-frame
-        cap = cv2.VideoCapture('http://10.207.103.245/5003')
+        cap = cv2.VideoCapture(0)
 
         with mp_hands.Hands(
                 model_complexity=0,
@@ -196,7 +196,7 @@ def index():
     word = ' '
     sentence = ' '
     suggestions = []
-    return render_template('index.html')
+    return render_template('index_Alban_final.html')
 
 # Define the recognize signs function
 @app.route('/api/recognize', methods=['POST'])
