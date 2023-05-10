@@ -131,4 +131,4 @@ def send_js(path):
 
 if __name__ == '__main__':
     app.debug = True
-    app.run(port=5003, debug=True, host = '0.0.0.0')
+    app.run(ssl_context='adhoc', port=5003, debug=True, host='0.0.0.0')

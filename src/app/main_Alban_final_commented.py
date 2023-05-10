@@ -182,7 +182,7 @@ alphabet = ['1', '2', '3', '4', 'space', 'del', 'A', 'B', 'C', 'D', 'E', 'F', 'G
 
 # Load weights of the pretrained model
 autocomplete = autocomplete_factory(content_files=content_files)
-model = tf.keras.models.load_model("src/app/model_saves/my_model/")
+model = tf.keras.models.load_model("src/app/model_saves/model_v2/")
 
 # Defining mediapipe variables
 mp_drawing = mp.solutions.drawing_utils
