@@ -17,6 +17,27 @@ word = ' '
 sentence = ' '
 suggestions = []
 
+# Load dictionary of words
+content_files = {
+    'words': {
+        'filepath': 'src/app/word_dict.json',
+        'compress': True  # means compress the graph data in memory
+    }
+}
+
+# Define alphabet that we are using
+alphabet = ['1', '2', '3', '4', 'space', 'del', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'
+            , 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y']
+
+# Load weights of the pretrained model
+autocomplete = autocomplete_factory(content_files=content_files)
+model = tf.keras.models.load_model("src/app/model_saves/model_v2/")
+
+# Defining mediapipe variables
+mp_drawing = mp.solutions.drawing_utils
+mp_drawing_styles = mp.solutions.drawing_styles
+mp_hands = mp.solutions.hands
+
 # Functions definition
 def most_frequent(List):
     # Return the most frequent word of a list
@@ -167,27 +188,6 @@ def gen_frames():
 def video_feed():
     #Video streaming route. Put this in the src attribute of an img tag
     return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
-
-# Load dictionary of words
-content_files = {
-    'words': {
-        'filepath': 'src/app/word_dict.json',
-        'compress': True  # means compress the graph data in memory
-    }
-}
-
-# Define alphabet that we are using
-alphabet = ['1', '2', '3', '4', 'space', 'del', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'
-            , 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y']
-
-# Load weights of the pretrained model
-autocomplete = autocomplete_factory(content_files=content_files)
-model = tf.keras.models.load_model("src/app/model_saves/model_v2/")
-
-# Defining mediapipe variables
-mp_drawing = mp.solutions.drawing_utils
-mp_drawing_styles = mp.solutions.drawing_styles
-mp_hands = mp.solutions.hands
 
 # Define flask html pages
 @app.route('/')
