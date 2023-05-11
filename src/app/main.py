@@ -9,6 +9,27 @@ import base64
 import numpy as np
 from flask import Flask, request, jsonify, render_template, send_from_directory
 
+## Just to make sure requirments.txt is right
+import mediapipe as mp
+import cv2
+import mediapipe as mp
+mp_drawing = mp.solutions.drawing_utils
+mp_drawing_styles = mp.solutions.drawing_styles
+mp_hands = mp.solutions.hands
+import numpy as np
+import pandas as pd
+import tensorflow
+from tensorflow.keras.utils import to_categorical
+from sklearn.metrics import confusion_matrix, classification_report
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler    
+import matplotlib.pyplot as plt
+import seaborn as sns
+import os
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import LSTM, Dense
+from tensorflow.keras.callbacks import TensorBoard
+
 
 word = []
 

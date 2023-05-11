@@ -1,0 +1,12 @@
+fast_autocomplete==0.9.0
+Flask==2.2.2
+matplotlib==3.6.2
+mediapipe==0.9.3.0
+numpy==1.23.5
+opencv_python==4.7.0.72
+pandas==1.5.2
+Pillow==9.5.0
+scikit_learn==1.2.2
+seaborn==0.12.2
+tensorflow==2.12.0
+tensorflow_intel==2.11.0
