@@ -66,10 +66,6 @@ def gen_frames():
                     # If loading a video, use 'break' instead of 'continue'.
                     continue
 
-                print("before")
-                print(type(image))
-                print(image.shape)
-
                 # To improve performance, optionally mark the image as not writeable to
                 # pass by reference.
                 image.flags.writeable = False
@@ -200,7 +196,7 @@ def index():
     word = ' '
     sentence = ' '
     suggestions = []
-    return render_template('index_Alban_final.html')
+    return render_template('index_computer.html')
 
 # Define the recognize signs function
 @app.route('/api/recognize', methods=['POST'])
@@ -284,4 +280,4 @@ def send_js(path):
 
 if __name__ == '__main__':
     app.debug = True
-    app.run(port=5003, debug=True, host='10.207.8.173')
+    app.run(port=5003, debug=True, host='0.0.0.0')

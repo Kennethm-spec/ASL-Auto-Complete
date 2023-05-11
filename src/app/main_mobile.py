@@ -172,8 +172,6 @@ def recognize():
             letters.append(output)
         sign = most_frequent(letters)
 
-        print(letters)
-
         # Occurrence of the symbols
         occurrence = letters.count(sign)
 
