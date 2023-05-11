@@ -1,4 +1,4 @@
-# RADCAC
+# ASL-Auto-Complete
 A CV implementation for real-time ASL detection, completion, and correction for mobile devices.
 
 Authors:
