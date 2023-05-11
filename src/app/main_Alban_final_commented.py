@@ -284,4 +284,4 @@ def send_js(path):
 
 if __name__ == '__main__':
     app.debug = True
-    app.run(port=5003, debug=True, host='10.207.103.245')
+    app.run(port=5003, debug=True, host='10.207.8.173')
