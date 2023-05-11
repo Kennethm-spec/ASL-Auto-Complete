@@ -213,7 +213,6 @@ def recognize():
                 else:
                     sentence = sentence[:-1]
                     word = sentence.split(' ')[-1]
-                    word += ' '
             elif sign in ['1', '2', '3']:
                 # Make a choice between the suggestions
                 if len(suggestions) > int(sign)-1:
@@ -224,6 +223,8 @@ def recognize():
             else:
                 word += sign
                 sentence += sign
+
+
     # Return information to be displayed
     return jsonify({'sign': word.lower(), 'sentence': sentence.lower(), 'options': suggestions})
 
