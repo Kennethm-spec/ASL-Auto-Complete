@@ -1,6 +1,8 @@
 # ASL-Auto-Complete
 A CV implementation for real-time ASL detection, completion, and correction for mobile devices.
 
+### [Watch our Project Video!](https://youtu.be/4rL-yoksNag)
+
 Authors:
 - [Andrew X](https://github.com/Qulxis)
 - [Kenneth M](https://github.com/Kennethm-spec)
