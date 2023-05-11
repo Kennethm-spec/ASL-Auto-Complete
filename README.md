@@ -13,6 +13,10 @@ To install the version of python libraries used run:
 ```
 $ pip install -r requirements.txt
 ```
+Note you may need to install fast-autocomplete's metric library as well:
+```
+$ pip install fast-autocomplete[levenshtein]
+```
 We tested our system on Python Version 3.7-3.9
 
 # Walkthrough
